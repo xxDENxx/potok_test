@@ -8,9 +8,9 @@
   = loan.sum
 %p
   Процентные ставки:
-  = "%05.2f%" % loan.base_percent
+  = "%05.2f%" % (loan.base_percent*100)
   //
-  = "%05.2f%" % loan.delay_percent
+  = "%05.2f%" % (loan.delay_percent*100)
 %p
   Месячные выплаты:
   - loan.payments.each do |p|
