@@ -45,11 +45,17 @@
           };
           $('.js_checking input').change(update_stat);
           update_stat();
+    %h4 Платежи по месяцам
+    %blockquote
+      %p После досрочного погашения платежей нет, а значит поля нужно выставить в пустое значение
     - 6.times do |order|
       = lf.fields_for :payments, Payment.new do |lpf|
         = lpf.hidden_field :order, value: order
         .form-group
-          %label Тип платежа
-          = lpf.select :status, [['Обычный', :normal],['Просроченный', :delay],['Досрочное погашение', :all]], include_blank: true
+          %label
+            Тип платежа в 
+            = order+1
+            месяц
+          = lpf.select :status, [['Обычный', :normal],['Просроченный', :delay],['Досрочное погашение', :all]], {include_blank: true}, {class: 'form-control'}
   .actions
-    = f.submit 'Добавить'
+    = f.submit 'Добавить', class: 'btn btn-primary'
