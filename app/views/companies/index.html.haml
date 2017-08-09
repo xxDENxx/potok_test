@@ -1,5 +1,5 @@
 %h1 Все Юридические лица
-%table
+%table.table.table-striped.table-bordered.table-hover
   %thead
     %tr
       %th Название
@@ -10,7 +10,7 @@
     - @companies.each do |company|
       %tr
         %td= link_to company.name, company
-        %td= "%05.2f%" % (company.loan.income_percent*100)
+        %td= "%.2f%" % (company.loan.income_percent*100)
         %td
           = link_to company, method: :delete, data: { confirm: 'Вы уверены что хотите удалить ЮЛ?' } do
             %i.fa.fa-close{style: 'color:red'}

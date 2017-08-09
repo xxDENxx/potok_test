@@ -8,9 +8,9 @@
   = loan.sum
 %p
   Процентные ставки:
-  = "%05.2f%" % (loan.base_percent*100)
+  = "%.2f%" % (loan.base_percent*100)
   //
-  = "%05.2f%" % (loan.delay_percent*100)
+  = "%.2f%" % (loan.delay_percent*100)
 %p
   Месячные выплаты:
   - loan.payments.each do |p|
@@ -22,8 +22,8 @@
       - when 'all'
         - p_sum = loan.sum - loan.sum.to_f/loan.time*p.order + loan.sum*loan.base_percent/12
     %br/
-    = "%05.2f" % p_sum
+    = "%.2f" % p_sum
 %p
   Выплаченные проценты:
-  = loan.total_overdrive
+  = "%.2f%" % loan.total_overdrive
 = link_to 'К списку', companies_path
