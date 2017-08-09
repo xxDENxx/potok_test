@@ -1,0 +1,55 @@
+= form_for @company do |f|
+  - if @company.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@company.errors.count, "error")} prohibited this company from being saved:"
+      %ul
+        - @company.errors.full_messages.each do |message|
+          %li= message
+  .form-group
+    = f.label :name, 'Название'
+    = f.text_field :name, class: 'form-control'
+  = f.fields_for :loan, Loan.new do |lf|
+    .row
+      .col-xs-6.col-sm-6.col-md-6.col-lg-6.js_checking
+        .form-group
+          = lf.label :sum, 'Сумма'
+          = lf.text_field :sum, value: 1000000, class: 'form-control'
+        .form-group
+          = lf.label :time, 'Срок'
+          = lf.text_field :time, value: 6, class: 'form-control'
+        .form-group
+          = lf.label :base_percent, 'Ставка'
+          = lf.text_field :base_percent, value: 0.30, class: 'form-control'
+        .form-group
+          = lf.label :delay_percent, 'Ставка при просрочке'
+          = lf.text_field :delay_percent, value: 0.50, class: 'form-control'
+      .col-xs-6.col-sm-6.col-md-6.col-lg-6
+        .form-group
+          %label платеж по долгу
+          %input.form-control#js_pay_main{disabled: :disabled}
+        .form-group
+          %label платеж по поцентам
+          %input.form-control#js_pay_percent{disabled: :disabled}
+        .form-group
+          %label общий
+          %input.form-control#js_pay_total{disabled: :disabled}
+        .form-group
+          %label Сумма выплат
+          %input.form-control#js_pay_all{disabled: :disabled}
+        :javascript
+          var update_stat = function(){
+            $('#js_pay_main').val(($('#company_loan_attributes_sum').val()/$('#company_loan_attributes_time').val()).toFixed(2));
+            $('#js_pay_percent').val($('#company_loan_attributes_sum').val()*$('#company_loan_attributes_base_percent').val()/12);
+            $('#js_pay_total').val(parseFloat($('#js_pay_main').val())+parseFloat($('#js_pay_percent').val()));
+            $('#js_pay_all').val(($('#js_pay_total').val()*$('#company_loan_attributes_time').val()).toFixed(0));
+          };
+          $('.js_checking input').change(update_stat);
+          update_stat();
+    - 6.times do |order|
+      = lf.fields_for :payments, Payment.new do |lpf|
+        = lpf.hidden_field :order, value: order
+        .form-group
+          %label Тип платежа
+          = lpf.select :status, [['Обычный', :normal],['Просроченный', :delay],['Досрочное погашение', :all]], include_blank: true
+  .actions
+    = f.submit 'Добавить'

@@ -1,0 +1,30 @@
+%p
+  Ожидаемая ставка:
+  %mark
+    %span.js_plan_percent= "%05.2f" % (@real*100)
+    = '%'
+%p
+  Историческая ставка:
+  %mark
+    %span.js_history_percent= "%05.2f" % (@historical*100)
+    = '%'
+#calculator
+  .form-group
+    %label{for: :sum} Вложить
+    %input.form-control{type: :text, id: :sum, value: 1000000}
+  %button.btn.btn-default.js-run_calc Посчитать
+#result{style:'display:none'}
+  Ожидаемый доход:
+  %span.js_plan
+  %br/
+  Фактический доход:
+  %span.js_real
+:javascript
+  $('.js-run_calc').click(function(){
+    $('.js_plan').html($('#sum').val()*$('.js_plan_percent').html()/100.0);
+    $('.js_real').html($('#sum').val()*$('.js_history_percent').html()/100.0);
+    $(this).html('Пересчитать');
+    $('#result').show();
+  });
+
+  
