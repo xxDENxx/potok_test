@@ -7,7 +7,6 @@ end
 
 #--- гемы из генератора
 gem 'rails', '~> 5.1.2'#новый проект, свежие рельсы
-gem 'sqlite3'#нам не нужна полноценная база для тестов
 
 gem 'puma', '~> 3.7'
 gem 'sass-rails', '~> 5.0'
@@ -24,3 +23,13 @@ gem 'jquery-ui-rails'
 gem 'less-rails'
 gem 'twitter-bootstrap-rails'
 gem "font-awesome-rails"
+
+
+#heroku не поддерживает sqlite
+
+group :development, :test do
+  gem 'sqlite3'#нам не нужна полноценная база для тестов
+end
+group :production do
+  gem 'pg'
+end
